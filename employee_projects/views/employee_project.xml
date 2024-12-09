@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="employee_project_form_view" model="ir.ui.view">
+            <field name="name">employee_project_form_view</field>
+            <field name="model">employee.project</field>
+            <field name="arch" type="xml">
+                <form string="Employee Project">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="employee_id"/>
+                            </group>
+                            <group>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                            </group>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_project_tree_view" model="ir.ui.view">
+            <field name="name">employee_project_tree_view</field>
+            <field name="model">employee.project</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Projects">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="employee_project_kanban_view" model="ir.ui.view">
+            <field name="name">employee_project_kanban_view</field>
+            <field name="model">employee.project</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong><field name="name"/></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="employee_project_search_view" model="ir.ui.view">
+            <field name="name">employee_project_search_view</field>
+            <field name="model">employee.project</field>
+            <field name="arch" type="xml">
+                <search string="Projects">
+                    <field name="name" filter_domain="['|', ('name','ilike',self), ('employee_id','ilike',self)]" string="Name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="employee_project_action_view" model="ir.actions.act_window">
+            <field name="name">Employee Projects</field>
+            <field name="res_model">employee.project</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="employee_project_search_view"/>
+            <field name="view_id" ref="employee_project_tree_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new Project
+                </p><p>
+                    Employee Projects to extend HR functionalities
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="employee_project_menu"
+            action="employee_project_action_view"
+            parent="hr.menu_hr_employee_payroll"
+            sequence="100"
+            groups="hr.group_hr_user"/>
+    </data>
+</odoo>
